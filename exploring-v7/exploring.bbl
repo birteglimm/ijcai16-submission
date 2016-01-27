@@ -1,0 +1,183 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Abiteboul \bgroup \em et al.\egroup
+  }{1995}]{database}
+Serge Abiteboul, Richard Hull, and Victor Vianu.
+\newblock {\em {F}oundations of {D}atabases}.
+\newblock Addison-Wesley, 1995.
+
+\bibitem[\protect\citeauthoryear{Afrati and
+  Papadimitriou}{1993}]{DBLP:journals/jacm/AfratiP93}
+Foto~N. Afrati and Christos~H. Papadimitriou.
+\newblock The parallel complexity of simple logic programs.
+\newblock {\em J. {ACM}}, 40(4):891--916, 1993.
+
+\bibitem[\protect\citeauthoryear{Allender}{2007}]{DBLP:conf/cie/Allender07}
+Eric Allender.
+\newblock Reachability problems: An update.
+\newblock In {\em Proc. of CiE}, pages 25--27, 2007.
+
+\bibitem[\protect\citeauthoryear{Fan and
+  Huai}{2014}]{DBLP:journals/jcst/FanH14}
+Wenfei Fan and Jinpeng Huai.
+\newblock Querying big data: Bridging theory and practice.
+\newblock {\em J. Comput. Sci. Technol.}, 29(5):849--869, 2014.
+
+\bibitem[\protect\citeauthoryear{Grosof \bgroup \em et al.\egroup
+  }{2003}]{DBLP:conf/www/GrosofHVD03}
+Benjamin~N. Grosof, Ian Horrocks, Raphael Volz, and Stefan Decker.
+\newblock Description logic programs: combining logic programs with description
+  logic.
+\newblock In {\em Proc. of WWW}, pages 48--57, 2003.
+
+\bibitem[\protect\citeauthoryear{Guo \bgroup \em et al.\egroup
+  }{2005}]{DBLP:journals/ws/GuoPH05}
+Yuanbo Guo, Zhengxiang Pan, and Jeff Heflin.
+\newblock {LUBM:} {A} benchmark for {OWL} knowledge base systems.
+\newblock {\em J. Web Sem.}, 3(2-3):158--182, 2005.
+
+\bibitem[\protect\citeauthoryear{Hayes}{2004}]{rdfSemantic}
+Patrick Hayes.
+\newblock Rdf semantics.
+\newblock In {\em W3C Recommendation}, 2004.
+
+\bibitem[\protect\citeauthoryear{Hogan \bgroup \em et al.\egroup
+  }{2009}]{DBLP:journals/ijswis/HoganHP09}
+Aidan Hogan, Andreas Harth, and Axel Polleres.
+\newblock Scalable authoritative {OWL} reasoning for the web.
+\newblock {\em Int. J. Semantic Web Inf. Syst.}, 5(2):49--90, 2009.
+
+\bibitem[\protect\citeauthoryear{Horrocks and
+  Patel{-}Schneider}{2004}]{DBLP:conf/www/HorrocksP04}
+Ian Horrocks and Peter~F. Patel{-}Schneider.
+\newblock A proposal for an owl rules language.
+\newblock In {\em Proc. of WWW}, pages 723--731, 2004.
+
+\bibitem[\protect\citeauthoryear{Karloff \bgroup \em et al.\egroup
+  }{2010}]{DBLP:conf/soda/KarloffSV10}
+Howard~J. Karloff, Siddharth Suri, and Sergei Vassilvitskii.
+\newblock A model of computation for mapreduce.
+\newblock In {\em Proc. of SODA}, pages 938--948, 2010.
+
+\bibitem[\protect\citeauthoryear{Kazakov \bgroup \em et al.\egroup
+  }{2014}]{DBLP:journals/jar/KazakovKS14}
+Yevgeny Kazakov, Markus Kr{\"{o}}tzsch, and Frantisek Simancik.
+\newblock The incredible {ELK} - from polynomial procedures to efficient
+  reasoning with $\mathcal{EL}$ ontologies.
+\newblock {\em J. Autom. Reasoning}, pages 1--61, 2014.
+
+\bibitem[\protect\citeauthoryear{Lembo \bgroup \em et al.\egroup
+  }{2013}]{DBLP:conf/dlog/LemboSS13}
+Domenico Lembo, Valerio Santarelli, and Domenico~Fabio Savo.
+\newblock A graph-based approach for classifying {OWL} 2 {QL} ontologies.
+\newblock In {\em Proc. of DL}, pages 747--759, 2013.
+
+\bibitem[\protect\citeauthoryear{Liebig and
+  M{\"{u}}ller}{2007}]{DBLP:conf/otm/LiebigM07}
+Thorsten Liebig and Felix M{\"{u}}ller.
+\newblock Parallelizing tableaux-based description logic reasoning.
+\newblock In {\em Proc. of OTM Workshops}, pages 1135--1144, 2007.
+
+\bibitem[\protect\citeauthoryear{Mahdisoltani \bgroup \em et al.\egroup
+  }{2015}]{DBLP:conf/cidr/MahdisoltaniBS15}
+Farzaneh Mahdisoltani, Joanna Biega, and Fabian~M. Suchanek.
+\newblock {YAGO3:} {A} knowledge base from multilingual wikipedias.
+\newblock In {\em Proc. of CIDR}, 2015.
+
+\bibitem[\protect\citeauthoryear{Meusel \bgroup \em et al.\egroup
+  }{2015}]{DBLP:conf/wims/MeuselBP15}
+Robert Meusel, Christian Bizer, and Heiko Paulheim.
+\newblock A web-scale study of the adoption and evolution of the schema.org
+  vocabulary over time.
+\newblock In {\em Proc. of WIMS}, pages 15:1--15:11, 2015.
+
+\bibitem[\protect\citeauthoryear{Motik \bgroup \em et al.\egroup
+  }{2014}]{DBLP:conf/aaai/MotikNPHO14}
+Boris Motik, Yavor Nenov, Robert Piro, Ian Horrocks, and Dan Olteanu.
+\newblock Parallel materialisation of datalog programs in centralised,
+  main-memory {RDF} systems.
+\newblock In {\em Proc. of AAAI}, pages 129--137, 2014.
+
+\bibitem[\protect\citeauthoryear{Oren \bgroup \em et al.\egroup
+  }{2009}]{oren2009marvin}
+Eyal Oren, Spyros Kotoulas, George Anadiotis, Ronny Siebes, Annette ten Teije,
+  and Frank van Harmelen.
+\newblock {Marvin: Distributed reasoning over large-scale Semantic Web data}.
+\newblock {\em J. Web Sem.}, 2009.
+
+\bibitem[\protect\citeauthoryear{Raymond~Greenlaw}{1995}]{RAYMOND-GREENLAW}
+Walter L.~Ruzzo Raymond~Greenlaw, H. James~Hoover.
+\newblock {\em Limits to Parallel Computation: P-Completeness Theory}.
+\newblock Oxford University Press, New York, 1995.
+
+\bibitem[\protect\citeauthoryear{Schlicht and
+  Stuckenschmidt}{2008}]{DBLP:conf/dlog/SchlichtS08}
+Anne Schlicht and Heiner Stuckenschmidt.
+\newblock Distributed resolution for {ALC}.
+\newblock In {\em Proc. of DL}, pages 326--341, 2008.
+
+\bibitem[\protect\citeauthoryear{Soma and
+  Prasanna}{2008}]{DBLP:conf/ISCApdcs/SomaP08}
+Ramakrishna Soma and Viktor~K. Prasanna.
+\newblock A data partitioning approach for parallelizing rule based inferencing
+  for materialized {OWL} knowledge bases.
+\newblock In {\em Proc. of ISCA}, pages 19--25, 2008.
+
+\bibitem[\protect\citeauthoryear{Suchanek \bgroup \em et al.\egroup
+  }{2008}]{DBLP:journals/ws/SuchanekKW08}
+Fabian~M. Suchanek, Gjergji Kasneci, and Gerhard Weikum.
+\newblock {YAGO:} {A} large ontology from wikipedia and wordnet.
+\newblock {\em J. Web Sem.}, 6(3):203--217, 2008.
+
+\bibitem[\protect\citeauthoryear{Sundara \bgroup \em et al.\egroup
+  }{2010}]{DBLP:conf/icde/SundaraAKDWCS10}
+Seema Sundara, Medha Atre, Vladimir Kolovski, Souripriya Das, Zhe Wu,
+  Eugene~Inseok Chong, and Jagannathan Srinivasan.
+\newblock Visualizing large-scale {RDF} data using subsets, summaries, and
+  sampling in oracle.
+\newblock In {\em Proc. of ICDE}, pages 1048--1059, 2010.
+
+\bibitem[\protect\citeauthoryear{Tachmazidis \bgroup \em et al.\egroup
+  }{2012}]{Tachmazidis-Stratified-ECAI2012}
+Ilias Tachmazidis, Grigoris Antoniou, Giorgos Flouris, Spyros Kotoulas, and Lee
+  McCluskey.
+\newblock {Large-scale Parallel Stratified Defeasible Reasoning}.
+\newblock In {\em Proc. of ECAI}, pages 738--743, 2012.
+
+\bibitem[\protect\citeauthoryear{ter Horst}{2005}]{DBLP:journals/ws/Horst05}
+Herman~J. ter Horst.
+\newblock Completeness, decidability and complexity of entailment for {RDF}
+  schema and a semantic extension involving the {OWL} vocabulary.
+\newblock {\em J. Web Sem.}, 3(2-3):79--115, 2005.
+
+\bibitem[\protect\citeauthoryear{Ullman and
+  Gelder}{1988}]{DBLP:journals/algorithmica/UllmanG88}
+Jeffrey~D. Ullman and Allen~Van Gelder.
+\newblock Parallel complexity of logical query programs.
+\newblock {\em Algorithmica}, 3:5--42, 1988.
+
+\bibitem[\protect\citeauthoryear{Urbani \bgroup \em et al.\egroup
+  }{2012}]{DBLP:journals/ws/UrbaniKMHB12}
+Jacopo Urbani, Spyros Kotoulas, Jason Maassen, Frank van Harmelen, and Henri~E.
+  Bal.
+\newblock Webpie: {A} web-scale parallel inference engine using mapreduce.
+\newblock {\em J. Web Sem.}, 10:59--75, 2012.
+
+\bibitem[\protect\citeauthoryear{Valiant}{1990}]{DBLP:journals/cacm/Valiant90}
+Leslie~G. Valiant.
+\newblock A bridging model for parallel computation.
+\newblock {\em Commun. {ACM}}, pages 103--111, 1990.
+
+\bibitem[\protect\citeauthoryear{Weaver and
+  Hendler}{2009}]{DBLP:conf/semweb/WeaverH09}
+Jesse Weaver and James~A. Hendler.
+\newblock Parallel materialization of the finite {RDFS} closure for hundreds of
+  millions of triples.
+\newblock In {\em Proc. of ISWC}, pages 682--697, 2009.
+
+\bibitem[\protect\citeauthoryear{Wu and Haarslev}{2012}]{DBLP:conf/dlog/WuH12}
+Kejia Wu and Volker Haarslev.
+\newblock A parallel reasoner for the description logic {ALC}.
+\newblock In {\em Proc. of DL}, pages 675--690, 2012.
+
+\end{thebibliography}
