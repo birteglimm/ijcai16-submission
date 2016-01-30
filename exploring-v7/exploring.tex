@@ -20,6 +20,8 @@
 % the following package is optional:
 %\usepackage{latexsym}
 
+\hyphenation{data-log}
+
 % Following comment is from ijcai97-submit.tex:
 % The preparation of these files was supported by Schlumberger Palo Alto
 % Research, AT\&T Bell Laboratories, and Morgan Kaufmann Publishers.
@@ -110,7 +112,7 @@ problem should be a decision problem in $\texttt{NC}$.
 
 \section{Parallelly Tractable Class}
 
-\noindent\textbf{Parallelly Tractable Class}. Our target is to find what kind of ontologies make the task of materialization parallelly tractable. Since we assume that for any datalog program $\langle\mathcal{O}, R\rangle$ the rule set $R$ is fixed, the materialization problem is thus in data complexity $\texttt{PTime}$-complete, which is considered to be inherently sequential in the worst case \cite{RAYMOND-GREENLAW}. In other words, the materialization problem on general datalog programs cannot be solved in parallel poly-logarithmic time unless \texttt{P}=\texttt{NC}. Thus, we say that
+\noindent\textbf{Parallelly Tractable Class}. Our target is to find what kinds of ontologies (not ontology languages) make the task of materialization parallelly tractable. Since we assume that for any datalog program $\langle\mathcal{O}, R\rangle$ the rule set $R$ is fixed, the materialization problem is thus in data complexity $\texttt{PTime}$-complete, which is considered to be inherently sequential in the worst case \cite{RAYMOND-GREENLAW}. In other words, the materialization problem on general datalog programs cannot be solved in parallel poly-logarithmic time unless \texttt{P}=\texttt{NC}. Thus, we say that
 the materialization on a class of datalog programs is parallelly tractable if there exists an algorithm that handles this class of datalog programs and runs in parallel poly-logarithmic time (this algorithm is also called an \texttt{NC} algorithm). Formally, we give the following definition to identify such a class of datalog programs.
 
 \begin{definition}\label{def:ptd}
@@ -122,25 +124,24 @@ According to the above definition, if we find an \texttt{NC} algorithm $\mathcal
 we can identify a \texttt{PTD} class $\mathcal{D}_{\mathcal{A}}$, which is the class of all datalog programs
 that can be handled by $\mathcal{A}$. In the following, we first give a parallel materialization algorithm that works for general datalog programs. We then restrict this algorithm to an \texttt{NC} version and identify the target \texttt{PTD} class.
 
-\textbf{Materialization Graph}. In order to give a parallel materialization algorithm, we introduce the notion of \emph{materialization graph}. It makes analysis of the given algorithm convenient.
+\textbf{Materialization Graph}. In order to give a parallel materialization algorithm, we introduce the notion of a \emph{materialization graph}. It makes the analysis of the given algorithm convenient.
 
 \begin{definition}
 \textbf{(Materialization Graph)}\label{def:mg} A materialization graph, with respect to
 a datalog program $P=\langle\mathcal{O}, R\rangle$, is a directed acyclic graph
-denoted by $\mathcal{G}=\langle V, E, f, g\rangle$ where,$V$ is the node set;
-$E$ is the edge set; $f$ is a mapping that maps $V$ to $T_R^{\omega}(\mathcal{O})$;
-$g$ is a mapping that maps $V$ to $P^*$. $f$ and $g$ are constrained by the following condition:
+denoted by $\mathcal{G}=\langle V, E, f, g\rangle$ where $V$ is the node set;
+$E$ is the edge set; $f$ is a mapping from $V$ to $T_R^{\omega}(\mathcal{O})$;
+$g$ is a mapping from $V$ to $P^*$. The mappings $f$ and $g$ are constrained by the following condition:
 $\forall v,v_1,...,v_n\in V$ such that $e(v_1, v),...,e(v_n, v)\in E$ and $v_1,...,v_n$ are all the parents of $v$, we have that $g(v)=$`$H\leftarrow B_1,...,B_n$' and $H\leftarrow B_1,...,B_n\in P^*$ iff $f(v)=H$, $f(v_i)=B_i (1\leq i\leq n)$.
 \end{definition}
 
-For some ground atom $H$, there may exist several rule instantiations where $H$ occurs as a head atom. This also means
-$H$ can be derived in different ways. The condition in the above definition restricts that, only one way to derive $H$
-is described by a materialization graph.
+For some ground atom $H$, there may exist several rule instantiations where $H$ occurs as a head atom. This also means that
+$H$ can be derived in different ways. The condition in the definition above results in only one way of deriving $H$ being described by a materialization graph.
 Suppose $\mathcal{G}$ is a materialization graph, the nodes whose fan-in is 0 are the original facts in $\mathcal{O}$. We call such a node an \emph{explicit node}. We call the other nodes in $\mathcal{G}$ the \emph{implicit nodes}. We say that a node
-$v$ is a \emph{single-way derivable} (SWD) node when $v$ has at most one implicit parent
-node; for the nodes with more than two implicit parent
-nodes, we call them \emph{multi-way derivable} (MWD) nodes. The size of $\mathcal{G}$,
-denoted by $|\mathcal{G}|$, is the number of nodes in $\mathcal{G}$. The depth of $\mathcal{G}$ is denoted by \texttt{depth}($\mathcal{G}$), which is the length of the longest path in $\mathcal{G}$. We give an example of materialization graph as follows.\\
+$v$ is a \emph{single-way derivable} (SWD) node if $v$ has at most one implicit parent
+node; nodes with more than two implicit parent
+nodes are called \emph{multi-way derivable} (MWD) nodes. The size of $\mathcal{G}$,
+denoted by $|\mathcal{G}|$, is the number of nodes in $\mathcal{G}$. The depth of $\mathcal{G}$, denoted \texttt{depth}($\mathcal{G}$), is the length of the longest path in $\mathcal{G}$. We next give an example of a materialization graph.\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -151,70 +152,69 @@ denoted by $|\mathcal{G}|$, is the number of nodes in $\mathcal{G}$. The depth o
 \end{figure}
 
 \begin{example}\label{exp:mg}
-Consider a DHL ontology whose TBox is $\{$$A\sqsubseteq\forall R.A$, $R\circ S\sqsubseteq R$$\}$, ABox contains several assertions $\{$$A(a),R(a,b_1),S(b_i,b_{i+1})$$\}$ where $1\leq i\leq k-1$ and $k$ is an integer and greater than 1. The corresponding datalog program of this ontology is $P_{exp}=\langle\mathcal{O}, R\rangle$ where $\mathcal{O}$ is the ABox, $R$ contains two rules: `$A(y)\leftarrow A(x),R(x,y)$', and `$R(x,z)\leftarrow R(x,y),S(y,z)$'. The graph in Figure \ref{fig:mg} is a materialization graph with respect to $P_{exp}$, denoted by $\mathcal{G}_{exp}$. The explicit nodes whose fan-in is 0 are the original facts in $\mathcal{O}$. Each of the implicit nodes corresponds to a ground instantiation of some rule. For example, the node $A(b_k)$ corresponds to the ground rule instantiation `$A(b_k)\leftarrow A(a),R(a,b_k)$'. The size of this materialization graph is the number of the nodes, that is $3k$. The depth of $\mathcal{G}_{exp}$ is $k+1$.
+Consider a DHL ontology where the TBox is $\{$$A\sqsubseteq\forall R.A$, $R\circ S\sqsubseteq R$$\}$ and the ABox contains several assertions $\{$$A(a),R(a,b_1),S(b_i,b_{i+1})$$\}$ for $1\leq i\leq k-1$ and $k$ is an integer greater than $1$. The corresponding datalog program of this ontology is $P_{exp}=\langle\mathcal{O}, R\rangle$ where $\mathcal{O}$ is the ABox and $R$ contains the two rules `$A(y)\leftarrow A(x),R(x,y)$' and `$R(x,z)\leftarrow R(x,y),S(y,z)$'. The graph in Figure~\ref{fig:mg} is a materialization graph with respect to $P_{exp}$, denoted by $\mathcal{G}_{exp}$. The explicit nodes whose fan-in is 0 are the original facts in $\mathcal{O}$. Each of the implicit nodes corresponds to a ground instantiation of some rule. For example, the node $A(b_k)$ corresponds to the ground rule instantiation `$A(b_k)\leftarrow A(a),R(a,b_k)$'. The size of this materialization graph is the number of the nodes, that is $3k$. The depth of $\mathcal{G}_{exp}$ is $k+1$.
 \end{example}
 
 We say that a materialization graph $\mathcal{G}$ is a \emph{complete materialization graph} when $\mathcal{G}$ contains all ground atoms in $T_R^{\omega}(\mathcal{O})$. The set of nodes in a complete materialization graph is actually the result of materialization. Thus the procedure of materialization
 can be transformed to the construction of a complete materialization graph. We pay our attention to complete materialization graphs and do not distinguish it to the notion `materialization graph'. It should also be noted that there may exist several materialization graphs for a datalog program.
 
-\textbf{A Naive Parallel Algorithm}. In this part, we propose a naive parallel algorithm (Algorithm 1) that constructs a materialization graph for a given datalog program.\\
+\textbf{A Naive Parallel Algorithm}. In this part, we propose a naive parallel algorithm (Algorithm~1) that constructs a materialization graph for a given datalog program.\\
 
-\noindent\texttt{Algorithm 1}. Given a datalog program $P=\langle\mathcal{O}, R\rangle$, this algorithm
+\noindent\texttt{Algorithm~1}. Given a datalog program $P=\langle\mathcal{O}, R\rangle$, the algorithm
 returns a materialization graph $\mathcal{G}$ of $P$. Recall that $P^*$ denotes the ground instantiation of $P$,
 which consists of all possible ground instantiations of rules in $R$. Suppose we have
-$|P^*|$ processors\footnote{Since we target to give theoretical analysis, we do not consider the practical feasibility here.}, and each rule instantiation in $P^*$ is assigned to one processor.
+$|P^*|$ processors,\footnote{This might not be practically feasible, but we focus on a theoretical analysis here.} and each rule instantiation in $P^*$ is assigned to one processor.
 Initially $\mathcal{G}$ is empty. The following three steps are then performed:
 
-(\emph{Step 1}) All facts in $\mathcal{O}$ are added to $\mathcal{G}$.
+(\emph{Step~1}) Add all facts in $\mathcal{O}$ to $\mathcal{G}$.
 
-(\emph{Step 2}) For each rule instantiation $H\leftarrow B_1,...,B_n$, if the body atoms are all in $\mathcal{G}$ while $H$ is not in $\mathcal{G}$\footnote{Suppose that each processor can use $O(1)$ time to access the state of ground atom, i.e., whether this ground atom has been added to the materialization graph. It can be implemented by maintaining an
-index of polynomial size.},
-the corresponding processor adds $H$ to $\mathcal{G}$ and creates arcs pointing from $B_1,...,B_n$ to $H$.
+(\emph{Step~2}) For each rule instantiation $H\leftarrow B_1,...,B_n$, if the body atoms are all in $\mathcal{G}$ while $H$ is not in $\mathcal{G}$,\footnote{Suppose that each processor can use $O(1)$ time to access the state of ground atom, i.e., whether this ground atom has been added to the materialization graph. This can be implemented by maintaining an
+index of polynomial size.}
+the corresponding processor adds $H$ to $\mathcal{G}$ and creates edges pointing from $B_1,...,B_n$ to $H$.
 
-(\emph{Step 3}) The algorithm iterates Step 2 until there is no processor that can add more nodes and arcs to $\mathcal{G}$.
-Then the algorithm terminates.\hfill$\Box$\\
+(\emph{Step~3}) If no processor that can add more nodes and edges to $\mathcal{G}$ terminate, otherwise iterate Step~2.\hfill$\Box$\\
 
 \begin{example}
-We consider the datalog program $P_{exp}$ in Example 1 again, and perform Algorithm 1 on it. Initially, all the facts
-($A(a),R(a,b_1),S(b_1,b_2),...,S(b_{k-1},b_{k})$) are added to the result $\mathcal{G}_{exp}$ (Step 1). Then in different iterations of Step 2, the remaining nodes are inserted into
-$\mathcal{G}_{exp}$ by different processors. For example a processor $p$ is allocated a rule instantiation `$A(b_2)\leftarrow A(a),R(a,b_2)$'. Then, processor $p$ adds $A(b_2)$ to $\mathcal{G}_{exp}$ after it checks that $A(a)$ and $R(a,b_2)$ are in $\mathcal{G}_{exp}$. Algorithm 1 halts when $A(b_k)$ has been added to $\mathcal{G}_{exp}$ (Step 3).
+We consider the datalog program $P_{exp}$ in Example~1 again, and perform Algorithm~1 on it. Initially, all the facts
+($A(a),R(a,b_1),S(b_1,b_2),...,S(b_{k-1},b_{k})$) are added to the result $\mathcal{G}_{exp}$ (Step~1). Then in different iterations of Step~2, the remaining nodes are inserted into
+$\mathcal{G}_{exp}$ by different processors. For example a processor $p$ is allocated a rule instantiation `$A(b_2)\leftarrow A(a),R(a,b_2)$'. Then, processor $p$ adds $A(b_2)$ to $\mathcal{G}_{exp}$ after it checks that $A(a)$ and $R(a,b_2)$ are in $\mathcal{G}_{exp}$. Algorithm~1 halts when $A(b_k)$ has been added to $\mathcal{G}_{exp}$ (Step~3).
 \end{example}
 
-We use Lemma \ref{lemma:a1} to show the correctness of Algorithm 1, and for any datalog program $P$, Algorithm 1 can always construct a materialization graph with the minimum depth among all the materialization graphs of $P$.
+Lemma~\ref{lemma:a1} shows the correctness of Algorithm~1 and that, for any datalog program $P$, Algorithm~1 always constructs a materialization graph with the minimum depth among all the materialization graphs of $P$.
 
 \begin{lemma}\label{lemma:a1}
-Given a datalog program $P=\langle\mathcal{O}, R\rangle$, we have (1) Algorithm 1 halts and returns a materialization graph $\mathcal{G}$ of $P$; (2) $\mathcal{G}$ has the the minimum depth among all the materialization graphs of $P$.
+Given a datalog program $P=\langle\mathcal{O}, R\rangle$, we have (1) Algorithm~1 halts and returns a materialization graph $\mathcal{G}$ of $P$; (2) $\mathcal{G}$ has the the minimum depth among all the materialization graphs of $P$.
 \end{lemma}
 
-We next discuss how to restrict Algorithm 1 to an \texttt{NC} version. (\uppercase\expandafter{\romannumeral1}) Since we do not allow introducing new constants during materialization and each predicate has a constant arity, one can check that $|P^*|$ is polynomial in the size\footnote{The size of $P$ can be seen as the number of characters used to encode $P$.} of $P$. This also means that the number of processors is polynomially bounded. (\uppercase\expandafter{\romannumeral2}) The computing time of Step 1 and Step 3 occupies constant time units because of parallelism. (\uppercase\expandafter{\romannumeral3}) The main computation part in Algorithm 1 is the iteration of Step 2. In each cycle of Step 2, all processors work independently from each other. Thus, in theory, Step 2 costs one time unit. The whole computing time turns out to be bounded by the number of iterations of Step 2. (\uppercase\expandafter{\romannumeral4})
+We next discuss how Algorithm~1 can be restricted to an \texttt{NC} version. (\uppercase\expandafter{\romannumeral1}) Since we do not allow introducing new constants during materialization and each predicate has a constant arity, one can check that $|P^*|$ is polynomial in the size\footnote{The size of $P$ can be seen as the number of characters used to encode $P$.} of $P$. This also means that the number of processors is polynomially bounded. (\uppercase\expandafter{\romannumeral2}) The computing time of Step~1 and Step~3 occupies constant time units because of parallelism. (\uppercase\expandafter{\romannumeral3}) The main computation part in Algorithm~1 is the iteration of Step~2. In each cycle of Step~2, all processors work independently from each other. Thus, in theory, Step~2 costs one time unit. The whole computing time turns out to be bounded by the number of iterations of Step~2. (\uppercase\expandafter{\romannumeral4})
 We now introduce a function $\psi$ that is poly-logarithmically bounded.  The input of $\psi$ is the size of $P$ and the output is an non-negative integer. Based on (\uppercase\expandafter{\romannumeral1},\uppercase\expandafter{\romannumeral2},
 \uppercase\expandafter{\romannumeral3},\uppercase\expandafter{\romannumeral4}), for any datalog program $P$, if we use $\psi(|P|)$ to
-bound the number of iterations of Step 2, then Algorithm 1 is an \texttt{NC} algorithm, denoted by $\mathcal{A}_1^{\psi}$.
+bound the number of iterations of Step~2, then Algorithm~1 is an \texttt{NC} algorithm, denoted by $\mathcal{A}_1^{\psi}$.
 
 Based on $\mathcal{A}_1^{\psi}$, we can identify a class of datalog programs $\mathcal{D}_{\mathcal{A}_1^{\psi}}$ where all the datalog programs can be handled by $\mathcal{A}_1^{\psi}$. It is obvious that $\mathcal{D}_{\mathcal{A}_1^{\psi}}$ is a \texttt{PTD} class.
 
-We further show that $\mathcal{D}_{\mathcal{A}_1^{\psi}}$ can be captured by materialization graph based the following theorem.
+We further show that $\mathcal{D}_{\mathcal{A}_1^{\psi}}$ can be captured in terms of materialization graph properties based the following theorem.
 
 \begin{theorem}
 For any datalog program $P$, $P\in\mathcal{D}_{\mathcal{A}_1^{\psi}}$ iff $P$ has a materialization graph whose depth is upper-bounded by $\psi(|P|)$.
 \end{theorem}
 
-$\mathcal{A}_1^{\psi}$ is restricted in a sense that it cannot even work on the datalog program $P_{exp}$ in Example 1. The graph $\mathcal{G}_{exp}$ in Figure \ref{fig:mg} is the unique materialization graph of $P_{exp}$. One can also check that \texttt{depth}($\mathcal{G}_{exp}$)$=k+1$. This means that the depth of $\mathcal{G}_{exp}$ is linearly bounded by $k$. On the other hand, the size of $P_{exp}$ can be captured by $k$. Thus for any $\psi$ that is poly-logarithmically bounded, we can always find a large $k$ such that $\mathcal{A}_1^{\psi}$ terminates without constructing a materialization graph of $P_{exp}$. However there indeed exists an \texttt{NC} algorithm that can handle $P_{exp}$. We discuss this in the next section.
+$\mathcal{A}_1^{\psi}$ is restricted in the sense that it cannot even work on the rather simple datalog program $P_{exp}$ in Example~1. The graph $\mathcal{G}_{exp}$ in Figure~\ref{fig:mg} is the unique materialization graph of $P_{exp}$. One can also check that \texttt{depth}($\mathcal{G}_{exp}$)$=k+1$. This means that the depth of $\mathcal{G}_{exp}$ is linearly bounded by $k$. On the other hand, the size of $P_{exp}$ can be captured by $k$. Thus, for any $\psi$ that is poly-logarithmically bounded, we can always find a $k$  large enough such that $\mathcal{A}_1^{\psi}$ terminates without constructing a materialization graph of $P_{exp}$. However there indeed exists an \texttt{NC} algorithm that can handle $P_{exp}$. We discuss this in the next section.
 
 \section{An Optimized \texttt{NC} Algorithm}
 
-In this section, we optimize Algorithm 1 such that $P_{exp}$
-can be handled. Based on the optimized variant of Algorithm 1, we can identify the other \texttt{PTD} class.
+In this section, we optimize Algorithm~1 such that $P_{exp}$
+can be handled. Based on the optimized variant of Algorithm~1, we can identify the other \texttt{PTD} class.
 
-We find that, in the case of Example 1, the construction of a materialization graph can be accelerated.
-In Example 1, $A(b_k)$ would be added to $\mathcal{G}_{exp}$ after \emph{at least} $k$ iterations by performing Algorithm 1. Observe that $A(b_k)$ is reachable from $R(a,b_1)$ through the path $(R(a,b_1),R(a,b_2),...,R(a,b_k))$. On the one hand, each node $R(a,b_i)$ ($2\leq i\leq k$) can be added to $\mathcal{G}_{exp}$ whenever its parent $R(a,b_{i-1})$ is in $\mathcal{G}$, since $R(a,b_i)$ is an SWD node, i.e., $R(a,b_{i-1})$ is the unique implicit parent node of $R(a,b_{i})$ (see the paragraph after Definition 2). On the other hand, $R(a,b_1)$ is initially added to $\mathcal{G}_{exp}$. Thus one can add all the nodes $R(a,b_i)$ ($2\leq i\leq k$) and $A(b_k)$ to $\mathcal{G}_{exp}$ right after $R(a,b_1)$.
-Based on this observation, we can optimize Algorithm 1 using the following strategy:
+We find that, in the case of Example~1, the construction of a materialization graph can be accelerated.
+In Example~1, $A(b_k)$ would be added to $\mathcal{G}_{exp}$ after \emph{at least} $k$ iterations by performing Algorithm~1. Observe that $A(b_k)$ is reachable from $R(a,b_1)$ through the path $(R(a,b_1),R(a,b_2),...,R(a,b_k))$. On the one hand, each node $R(a,b_i)$ ($2\leq i\leq k$) can be added to $\mathcal{G}_{exp}$ whenever its parent $R(a,b_{i-1})$ is in $\mathcal{G}$, since $R(a,b_i)$ is an SWD node, i.e., $R(a,b_{i-1})$ is the unique implicit parent node of $R(a,b_{i})$ (see the paragraph after Definition 2). On the other hand, $R(a,b_1)$ is initially added to $\mathcal{G}_{exp}$. Thus one can add all the nodes $R(a,b_i)$ ($2\leq i\leq k$) and $A(b_k)$ to $\mathcal{G}_{exp}$ right after $R(a,b_1)$.
+Based on this observation, we can optimize Algorithm~1 using the following strategy:
 
-(\textbf{Strategy}) \emph{In every iteration of Step 2, for each SWD node $v$, we add $v$ to $\mathcal{G}$ immediately if $v$ is reachable from some node that has been in $\mathcal{G}$ through a path containing only SWD nodes}.
+(\textbf{Strategy}) \emph{In every iteration of Step~2, for each SWD node $v$, we add $v$ to $\mathcal{G}$ immediately if $v$ is reachable from some node that has been in $\mathcal{G}$ through a path containing only SWD nodes}.
 
 To describe the reachability between two nodes, we use a
 binary transitive relation \texttt{rch}$\subseteq T_R^{\omega}(\mathcal{O})\times T_R^{\omega}(\mathcal{O})$, e.g.,
-\texttt{rch}$(v_1,v_2)$ means $v_2$ is reachable from $v_1$. In each cycle of Step 2, we compute a \texttt{rch}
+\texttt{rch}$(v_1,v_2)$ means $v_2$ is reachable from $v_1$. In each cycle of Step~2, we compute a \texttt{rch}
 relation (denoted by $S_{\tiny rch}$) by performing the following process:
 
 $(\textbf{\dag})$ \emph{For each rule instantiation $H\leftarrow B_1,..,B_i,..,B_n$ where $H$ is not in $\mathcal{G}$}:
@@ -225,7 +225,7 @@ $(\textbf{\dag})$ \emph{For each rule instantiation $H\leftarrow B_1,..,B_i,..,B
 
 We then compute the transitive closure of \texttt{rch} with respect to $S_{\tiny rch}$. From the transitive closure, we can identify such SWD nodes that can be added to $\mathcal{G}$ in advance. We give the following algorithm to apply the optimization strategy:\\
 
-\noindent\texttt{Algorithm 2}. This algorithm accepts two inputs: one is a datalog program $P=\langle\mathcal{O}, R\rangle$, the other one is a partial materialization graph $\mathcal{G}$ that is being constructed from $P$. Then the following steps are performed:
+\noindent\texttt{Algorithm~2}. This algorithm accepts two inputs: one is a datalog program $P=\langle\mathcal{O}, R\rangle$, the other one is a partial materialization graph $\mathcal{G}$ that is being constructed from $P$. Then the following steps are performed:
 
 (\textbf{\romannumeral1}) the algorithm first computes a \texttt{rch} relation $S_{\tiny rch}$ by following the above process (see $(\textbf{\dag})$).
 
@@ -235,31 +235,31 @@ We then compute the transitive closure of \texttt{rch} with respect to $S_{\tiny
 such that \texttt{rch}$(B',H)$,\texttt{rch}$(B'',B_i)\in S^*_{\tiny rch}$ where $B',B''$ are in $\mathcal{G}$; If $H$ is not in $\mathcal{G}$ or $H$ is in $\mathcal{G}$ but has no parent pointing to it, the algorithm adds $H$ and $B_i$ (if $B_i$ is not in $\mathcal{G}$) to $\mathcal{G}$, and creates edges $e(B_1, H),...,e(B_n, H)$ in $\mathcal{G}$. For other statements \texttt{rch}$(B_j,H)\in S_{\tiny rch}$, the algorithm does nothing.\hfill$\Box$\\
 
 It is well known that there is an \texttt{NC} algorithm for computing transitive closure \cite{DBLP:conf/cie/Allender07}.
-Motivated by this result, we propose a variant of Algorithm 1 based on Algorithm 2.\\
+Motivated by this result, we propose a variant of Algorithm~1 based on Algorithm~2.\\
 
-\noindent\texttt{Algorithm 3}. Given a datalog program $P=\langle\mathcal{O}, R\rangle$, this algorithm
+\noindent\texttt{Algorithm~3}. Given a datalog program $P=\langle\mathcal{O}, R\rangle$, this algorithm
 returns a materialization graph $\mathcal{G}$ of $P$. Initially $\mathcal{G}$ is empty. The following steps are then performed:
 
-(\emph{Step 1}) All facts in $\mathcal{O}$ are added to $\mathcal{G}$.
+(\emph{Step~1}) All facts in $\mathcal{O}$ are added to $\mathcal{G}$.
 
-(\emph{Step 2}) The algorithm computes $S_{\tiny rch}$ by performing (\textbf{\romannumeral1}) in Algorithm 2; the transitive closure $S^*_{\tiny rch}$ is computed by an \texttt{NC} algorithm (see (\textbf{\romannumeral2}) in Algorithm 2); $\mathcal{G}$ is updated by performing (\textbf{\romannumeral3}) in Algorithm 2.
+(\emph{Step~2}) The algorithm computes $S_{\tiny rch}$ by performing (\textbf{\romannumeral1}) in Algorithm~2; the transitive closure $S^*_{\tiny rch}$ is computed by an \texttt{NC} algorithm (see (\textbf{\romannumeral2}) in Algorithm~2); $\mathcal{G}$ is updated by performing (\textbf{\romannumeral3}) in Algorithm~2.
 
-(\emph{Step 3}) The algorithm iterates Step 2 until there is no node that can be added to $\mathcal{G}$. Then it terminates.\hfill$\Box$\\
+(\emph{Step~3}) The algorithm iterates Step~2 until there is no node that can be added to $\mathcal{G}$. Then it terminates.\hfill$\Box$\\
 
-We give the following lemma to show the correctness of Algorithm 3.
+We give the following lemma to show the correctness of Algorithm~3.
 
 \begin{lemma}
-Given a datalog program $P=\langle\mathcal{O}, R\rangle$, Algorithm 3 halts and the output $\mathcal{G}$ is a materialization graph of $P$.
+Given a datalog program $P=\langle\mathcal{O}, R\rangle$, Algorithm~3 halts and the output $\mathcal{G}$ is a materialization graph of $P$.
 \end{lemma}
 
 \begin{example}
-We perform Algorithm 3 on the datalog program $P_{exp}$ in Example 1. Initially, $R(a,b_1)$ is in the materialization graph $\mathcal{G}_{exp}$. In the first iteration of Step 2, all the rule instantiations are in two kinds of forms: `$A(b_{i})\leftarrow A(a),R(a,b_{i})$' and `$R(a,b_i)\leftarrow R(a,b_{i-1}),S(b_{i-1},b_i)$' $(2\leq i\leq k)$, $S_{\tiny rch}$ is the set $\{$\texttt{rch}$(R(a,b_{i-1}), R(a,b_i))|2\leq i\leq k\}\cup\{$\texttt{rch}$(R(a,b_i), A(b_i))|1\leq i\leq k\}$. In the transitive closure of $S_{\tiny rch}$,
-one can check that \texttt{rch}$(R(a,b_1), R(a,b_i)),$\texttt{rch}$(R(a,b_1), A(b_i))\in S^*_{\tiny rch}(2\leq i\leq k)$. Thus $R(a,b_i)$ and $A(b_i)$ ($2\leq i\leq k$) can all be added to $\mathcal{G}_{exp}$ in the first iteration of Step 2.
+We perform Algorithm~3 on the datalog program $P_{exp}$ in Example~1. Initially, $R(a,b_1)$ is in the materialization graph $\mathcal{G}_{exp}$. In the first iteration of Step~2, all the rule instantiations are in two kinds of forms: `$A(b_{i})\leftarrow A(a),R(a,b_{i})$' and `$R(a,b_i)\leftarrow R(a,b_{i-1}),S(b_{i-1},b_i)$' $(2\leq i\leq k)$, $S_{\tiny rch}$ is the set $\{$\texttt{rch}$(R(a,b_{i-1}), R(a,b_i))|2\leq i\leq k\}\cup\{$\texttt{rch}$(R(a,b_i), A(b_i))|1\leq i\leq k\}$. In the transitive closure of $S_{\tiny rch}$,
+one can check that \texttt{rch}$(R(a,b_1), R(a,b_i)),$\texttt{rch}$(R(a,b_1), A(b_i))\in S^*_{\tiny rch}(2\leq i\leq k)$. Thus $R(a,b_i)$ and $A(b_i)$ ($2\leq i\leq k$) can all be added to $\mathcal{G}_{exp}$ in the first iteration of Step~2.
 \end{example}
 
-We can obtain the \texttt{NC} variant of Algorithm 3 as what we do for Algorithm 1. It can be checked that a cycle
-of Step 2 in Algorithm 3 costs poly-logarithmical time, since the main part is computing $S^*_{\tiny rch}$ by an \texttt{NC} algorithm. Thus if the number of iterations of Step 2 is upper-bounded by a poly-logarithmical function,
-Algorithm 3 is an \texttt{NC} algorithm. As the same to $\mathcal{A}_1^{\psi}$, we use $\mathcal{A}_3^{\psi}$ to denote an \texttt{NC} variant. Specifically, for any datalog program $P$, the number of iterations of Step 2 in Algorithm 3 is
+We can obtain the \texttt{NC} variant of Algorithm~3 as what we do for Algorithm~1. It can be checked that a cycle
+of Step~2 in Algorithm~3 costs poly-logarithmical time, since the main part is computing $S^*_{\tiny rch}$ by an \texttt{NC} algorithm. Thus if the number of iterations of Step~2 is upper-bounded by a poly-logarithmical function,
+Algorithm~3 is an \texttt{NC} algorithm. As the same to $\mathcal{A}_1^{\psi}$, we use $\mathcal{A}_3^{\psi}$ to denote an \texttt{NC} variant. Specifically, for any datalog program $P$, the number of iterations of Step~2 in Algorithm~3 is
 bounded by $\psi(|P|)$, where $\psi$ is a poly-logarithmically bounded function.
 
 Based on $\mathcal{A}_3^{\psi}$, we can identify a \texttt{PTD} class $\mathcal{D}_{\mathcal{A}_3^{\psi}}$. One can further check that, for any $\psi$, $\mathcal{D}_{\mathcal{A}_1^{\psi}}\subseteq\mathcal{D}_{\mathcal{A}_3^{\psi}}$.
@@ -323,7 +323,7 @@ In particular, $C$ can also be a disjunction ($C\sqcup D$) or an existential res
 can also be a universal restriction ($\forall R.C$). Furthermore, the statements about roles, i.e., role inclusions ($R\sqsubseteq S$), inverse roles ($R\sqsubseteq S^-$), transitivity ($R\circ R\sqsubseteq R$) and role compositions ($R\circ S\sqsubseteq T$), are also allowed in DHL.
 The assertions in
 an ABox of a DHL ontology are of two forms $C(a)$ and $R(a,b)$, which correspond to the facts
-in a datalog program. Readers can refer to Example 1 for
+in a datalog program. Readers can refer to Example~1 for
 the example of datalog rules rewritten from a DHL ontology.
 In the following, we define a class of datalog programs $\mathcal{D}_{dhl}$ and
 show that $\mathcal{D}_{dhl}$ is a \texttt{PTD} class by Theorem 5.
@@ -364,7 +364,7 @@ refer to $\mathcal{D}_{rdfs}$ and $\mathcal{D}_{dhl}$ when building their own on
 Parallel reasoning with ontology languages has been extensively studied in the past decade.
 
 The parallel reasoner RDFox \cite{DBLP:conf/aaai/MotikNPHO14} handles reasoning on datalog rewritable ontology languages.
-Algorithm 1 proposed in Section 3 is similar to the main algorithm for RDFox (see \cite{DBLP:conf/aaai/MotikNPHO14}, sections 3 and 4). A thread in RDFox handles several rule instantiations with respect to a fact. Such a thread corresponds to a group of processors in Algorithm 1 that are assigned with the rule instantiations handled by the thread. Thus the materialization of the datalog program in Example 1 is serial on RDFox. We use Algorithm 3 to show that the datalog program in Example 1 is also parallelly tractable, i.e., belonging to $\mathcal{D}_{\mathcal{A}_3^{\psi}}$.
+Algorithm~1 proposed in Section 3 is similar to the main algorithm for RDFox (see \cite{DBLP:conf/aaai/MotikNPHO14}, sections 3 and 4). A thread in RDFox handles several rule instantiations with respect to a fact. Such a thread corresponds to a group of processors in Algorithm~1 that are assigned with the rule instantiations handled by the thread. Thus the materialization of the datalog program in Example~1 is serial on RDFox. We use Algorithm~3 to show that the datalog program in Example~1 is also parallelly tractable, i.e., belonging to $\mathcal{D}_{\mathcal{A}_3^{\psi}}$.
 
 For RDFS materialization, different parallel techniques and platforms are used. The representative systems are WebPIE \cite{DBLP:journals/ws/UrbaniKMHB12}, Marvin \cite{oren2009marvin} and SAOR \cite{DBLP:journals/ijswis/HoganHP09}.
 The data partition strategies are also studied \cite{DBLP:conf/ISCApdcs/SomaP08,DBLP:conf/semweb/WeaverH09}. Parallel reasoning has also been verified to be available on other OWL fragments, like OWL EL \cite{DBLP:journals/jar/KazakovKS14}, OWL QL \cite{DBLP:conf/dlog/LemboSS13}, and even highly expressive languages \cite{DBLP:conf/otm/LiebigM07,DBLP:conf/dlog/SchlichtS08,DBLP:conf/dlog/WuH12}. Parallelism can also improve the performance of evaluation on non-monotonic logic \cite{Tachmazidis-Stratified-ECAI2012}.
@@ -386,7 +386,7 @@ restricted version of LUBM belong to $\mathcal{D}_{dhl}$.
 In one of our future works, we will study how to apply theoretical results into practice.
 One idea is to study the impact of the restrictions in Definition 3 and Definition 4 by analyzing more real ontologies,
 for example DBpedia\footnote{http://wiki.dbpedia.org/} and the biomedical ontology SNOMED CT\footnote{http://www.ihtsdo.org/snomed-ct}.
-The other idea is to adapt the optimizations given in Algorithm 3 to existing parallel reasoning algorithms.
+The other idea is to adapt the optimizations given in Algorithm~3 to existing parallel reasoning algorithms.
 Another line of future work is to extend our results to other OWL languages, e.g., OWL RL.
 
 \clearpage
