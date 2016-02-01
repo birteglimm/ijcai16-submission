@@ -1,0 +1,9 @@
+*.aux
+*.bbl
+*.blg
+*.log
+exploring.pdf
+*.toc
+.DS_Store
+*.dvi
+*.synctex.gz
