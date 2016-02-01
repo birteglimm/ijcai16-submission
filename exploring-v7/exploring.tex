@@ -204,11 +204,9 @@ $\mathcal{A}_1^{\psi}$ is restricted in the sense that it cannot even work on th
 \section{An Optimized \texttt{NC} Algorithm}
 
 In this section, we optimize Algorithm~1 such that $P_{exp}$
-can be handled. Based on the optimized variant of Algorithm~1, we can identify the other \texttt{PTD} class.
+can be handled. Based on the optimized variant of Algorithm~1, we can identify other \texttt{PTD} classes.
 
-We find that, in the case of Example~1, the construction of a materialization graph can be accelerated.
-In Example~1, $A(b_k)$ would be added to $\mathcal{G}_{exp}$ after \emph{at least} $k$ iterations by performing Algorithm~1. Observe that $A(b_k)$ is reachable from $R(a,b_1)$ through the path $(R(a,b_1),R(a,b_2),...,R(a,b_k))$. On the one hand, each node $R(a,b_i)$ ($2\leq i\leq k$) can be added to $\mathcal{G}_{exp}$ whenever its parent $R(a,b_{i-1})$ is in $\mathcal{G}$, since $R(a,b_i)$ is an SWD node, i.e., $R(a,b_{i-1})$ is the unique implicit parent node of $R(a,b_{i})$ (see the paragraph after Definition 2). On the other hand, $R(a,b_1)$ is initially added to $\mathcal{G}_{exp}$. Thus one can add all the nodes $R(a,b_i)$ ($2\leq i\leq k$) and $A(b_k)$ to $\mathcal{G}_{exp}$ right after $R(a,b_1)$.
-Based on this observation, we can optimize Algorithm~1 using the following strategy:
+For Example~1, the construction of the materialization graph can be accelerated. Using Algorithm~1, $A(b_k)$ is added to $\mathcal{G}_{exp}$ after \emph{at least} $k$ iterations. Observe that $A(b_k)$ is reachable from $R(a,b_1)$ through the path $(R(a,b_1),R(a,b_2),...,R(a,b_k))$. On the one hand, each node $R(a,b_i)$ ($2\leq i\leq k$) can be added to $\mathcal{G}_{exp}$ whenever its parent $R(a,b_{i-1})$ is in $\mathcal{G}$, since $R(a,b_i)$ is an SWD node, i.e., $R(a,b_{i-1})$ is the unique implicit parent node of $R(a,b_{i})$ (see the paragraph after Definition 2). On the other hand, $R(a,b_1)$ is initially added to $\mathcal{G}_{exp}$. Thus, one can add all the nodes $R(a,b_i)$ ($2\leq i\leq k$) and $A(b_k)$ to $\mathcal{G}_{exp}$ right after $R(a,b_1)$. Based on this observation, we optimize Algorithm~1 using the following strategy:
 
 (\textbf{Strategy}) \emph{In every iteration of Step~2, for each SWD node $v$, we add $v$ to $\mathcal{G}$ immediately if $v$ is reachable from some node that has been in $\mathcal{G}$ through a path containing only SWD nodes}.
 
@@ -223,33 +221,33 @@ $(\textbf{\dag})$ \emph{For each rule instantiation $H\leftarrow B_1,..,B_i,..,B
 
 \emph{(2) if in the body, $B_i$ is the unique implicit node and not yet in $\mathcal{G}$, we add \texttt{rch}$(B_i,H)$ to $S_{\tiny rch}$}.\hfill$\Box$
 
-We then compute the transitive closure of \texttt{rch} with respect to $S_{\tiny rch}$. From the transitive closure, we can identify such SWD nodes that can be added to $\mathcal{G}$ in advance. We give the following algorithm to apply the optimization strategy:\\
+We then compute the transitive closure of \texttt{rch} with respect to $S_{\tiny rch}$. From the transitive closure, we can identify such SWD nodes that can be added to $\mathcal{G}$ in advance. The following algorithm applies this optimization strategy:\\
 
-\noindent\texttt{Algorithm~2}. This algorithm accepts two inputs: one is a datalog program $P=\langle\mathcal{O}, R\rangle$, the other one is a partial materialization graph $\mathcal{G}$ that is being constructed from $P$. Then the following steps are performed:
+\noindent\texttt{Algorithm~2}. The algorithm requires two inputs: a datalog program $P=\langle\mathcal{O}, R\rangle$ and a (partial) materialization graph $\mathcal{G}$ that is constructed from $P$. Then the following steps are performed:
 
-(\textbf{\romannumeral1}) the algorithm first computes a \texttt{rch} relation $S_{\tiny rch}$ by following the above process (see $(\textbf{\dag})$).
+(\textbf{\romannumeral1}) Compute a \texttt{rch} relation $S_{\tiny rch}$ by following the above process (see $(\textbf{\dag})$).
 
-(\textbf{\romannumeral2}) the algorithm then computes the transitive closure of $S_{\tiny rch}$ and gets a new one $S^*_{\tiny rch}$.
+% (\textbf{\romannumeral2}) Compute the transitive closure of $S_{\tiny rch}$ and gets a new one $S^*_{\tiny rch}$.
+(\textbf{\romannumeral2}) Compute the transitive closure $S^*_{\tiny rch}$ of $S_{\tiny rch}$.
 
-(\textbf{\romannumeral3}) Finally, $\mathcal{G}$ is updated as follows: for any \texttt{rch}$(B_i,H)\in S_{\tiny rch}$ that corresponds to $H\leftarrow B_1,..,B_i,..,B_n$
-such that \texttt{rch}$(B',H)$,\texttt{rch}$(B'',B_i)\in S^*_{\tiny rch}$ where $B',B''$ are in $\mathcal{G}$; If $H$ is not in $\mathcal{G}$ or $H$ is in $\mathcal{G}$ but has no parent pointing to it, the algorithm adds $H$ and $B_i$ (if $B_i$ is not in $\mathcal{G}$) to $\mathcal{G}$, and creates edges $e(B_1, H),...,e(B_n, H)$ in $\mathcal{G}$. For other statements \texttt{rch}$(B_j,H)\in S_{\tiny rch}$, the algorithm does nothing.\hfill$\Box$\\
+(\textbf{\romannumeral3}) Update $\mathcal{G}$ as follows: for any \texttt{rch}$(B_i,H)\in S_{\tiny rch}$ that corresponds to $H\leftarrow B_1,..,B_i,..,B_n$
+such that \texttt{rch}$(B',H)$,\texttt{rch}$(B'',B_i)\in S^*_{\tiny rch}$ where $B',B''$ are in $\mathcal{G}$; If $H$ is not in $\mathcal{G}$ or $H$ is in $\mathcal{G}$ but has no parent pointing to it, add $H$ and $B_i$ (if $B_i$ is not in $\mathcal{G}$) to $\mathcal{G}$, and create the edges $e(B_1, H),...,e(B_n, H)$ in $\mathcal{G}$. Do nothing for other statements \texttt{rch}$(B_j,H)\in S_{\tiny rch}$.\hfill$\Box$\\
 
-It is well known that there is an \texttt{NC} algorithm for computing transitive closure \cite{DBLP:conf/cie/Allender07}.
-Motivated by this result, we propose a variant of Algorithm~1 based on Algorithm~2.\\
+It is well known that there is an \texttt{NC} algorithm for computing the transitive closure \cite{DBLP:conf/cie/Allender07}. Based on this result and Algorithm~2, we propose a variant of Algorithm~1:\\
 
-\noindent\texttt{Algorithm~3}. Given a datalog program $P=\langle\mathcal{O}, R\rangle$, this algorithm
+\noindent\texttt{Algorithm~3}. Given a datalog program $P=\langle\mathcal{O}, R\rangle$, the algorithm
 returns a materialization graph $\mathcal{G}$ of $P$. Initially $\mathcal{G}$ is empty. The following steps are then performed:
 
-(\emph{Step~1}) All facts in $\mathcal{O}$ are added to $\mathcal{G}$.
+(\emph{Step~1}) Add all facts in $\mathcal{O}$ to $\mathcal{G}$.
 
-(\emph{Step~2}) The algorithm computes $S_{\tiny rch}$ by performing (\textbf{\romannumeral1}) in Algorithm~2; the transitive closure $S^*_{\tiny rch}$ is computed by an \texttt{NC} algorithm (see (\textbf{\romannumeral2}) in Algorithm~2); $\mathcal{G}$ is updated by performing (\textbf{\romannumeral3}) in Algorithm~2.
+(\emph{Step~2}) Compute $S_{\tiny rch}$ by performing (\textbf{\romannumeral1}) in Algorithm~2; use an \texttt{NC} algorithm to compute the transitive closure $S^*_{\tiny rch}$ (see (\textbf{\romannumeral2}) in Algorithm~2); update $\mathcal{G}$ by performing (\textbf{\romannumeral3}) in Algorithm~2.
 
-(\emph{Step~3}) The algorithm iterates Step~2 until there is no node that can be added to $\mathcal{G}$. Then it terminates.\hfill$\Box$\\
+(\emph{Step~3}) If no nodes can be added to $\mathcal{G}$ termine, otherwise iterate Step~2.\hfill$\Box$\\
 
-We give the following lemma to show the correctness of Algorithm~3.
+The following lemma shows the correctness of Algorithm~3.
 
 \begin{lemma}
-Given a datalog program $P=\langle\mathcal{O}, R\rangle$, Algorithm~3 halts and the output $\mathcal{G}$ is a materialization graph of $P$.
+Given a datalog program $P=\langle\mathcal{O}, R\rangle$, Algorithm~3 halts and outputs a materialization graph $\mathcal{G}$ of $P$.
 \end{lemma}
 
 \begin{example}
@@ -257,13 +255,12 @@ We perform Algorithm~3 on the datalog program $P_{exp}$ in Example~1. Initially,
 one can check that \texttt{rch}$(R(a,b_1), R(a,b_i)),$\texttt{rch}$(R(a,b_1), A(b_i))\in S^*_{\tiny rch}(2\leq i\leq k)$. Thus $R(a,b_i)$ and $A(b_i)$ ($2\leq i\leq k$) can all be added to $\mathcal{G}_{exp}$ in the first iteration of Step~2.
 \end{example}
 
-We can obtain the \texttt{NC} variant of Algorithm~3 as what we do for Algorithm~1. It can be checked that a cycle
-of Step~2 in Algorithm~3 costs poly-logarithmical time, since the main part is computing $S^*_{\tiny rch}$ by an \texttt{NC} algorithm. Thus if the number of iterations of Step~2 is upper-bounded by a poly-logarithmical function,
-Algorithm~3 is an \texttt{NC} algorithm. As the same to $\mathcal{A}_1^{\psi}$, we use $\mathcal{A}_3^{\psi}$ to denote an \texttt{NC} variant. Specifically, for any datalog program $P$, the number of iterations of Step~2 in Algorithm~3 is
+We obtain an \texttt{NC} variant of Algorithm~3 analogously to the process for Algorithm~1. It can be checked that an iteration of Step~2 in Algorithm~3 costs poly-logarithmical time, since the main part is computing $S^*_{\tiny rch}$ by an \texttt{NC} algorithm. Thus, if the number of iterations of Step~2 is upper-bounded by a poly-logarithmical function,
+Algorithm~3 is an \texttt{NC} algorithm. Analogously to $\mathcal{A}_1^{\psi}$, we use $\mathcal{A}_3^{\psi}$ to denote an \texttt{NC} variant. Specifically, for any datalog program $P$, the number of iterations of Step~2 in Algorithm~3 is
 bounded by $\psi(|P|)$, where $\psi$ is a poly-logarithmically bounded function.
 
 Based on $\mathcal{A}_3^{\psi}$, we can identify a \texttt{PTD} class $\mathcal{D}_{\mathcal{A}_3^{\psi}}$. One can further check that, for any $\psi$, $\mathcal{D}_{\mathcal{A}_1^{\psi}}\subseteq\mathcal{D}_{\mathcal{A}_3^{\psi}}$.
-The following theorem is given to show that $\mathcal{D}_{\mathcal{A}_3^{\psi}}$ can also be captured by materialization graph.
+The following theorem shows that $\mathcal{D}_{\mathcal{A}_3^{\psi}}$ can also be captured by a materialization graph.
 
 \begin{theorem}
 For any datalog program $P$, $P\in\mathcal{D}_{\mathcal{A}_3^{\psi}}$ iff $P$ has a materialization graph $\mathcal{G}$ such that the number of MWD nodes in each path of $\mathcal{G}$ is upper-bounded by $\psi(|P|)$.
